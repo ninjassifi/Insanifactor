@@ -1,10 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://ci8luv8o1kxis"]
+[gd_scene load_steps=10 format=3 uid="uid://cheshmqc02hpu"]
 
 [ext_resource type="Script" path="res://Scripts/Main.gd" id="1_4rfff"]
 [ext_resource type="PackedScene" uid="uid://cedoxu0lnsch0" path="res://control.tscn" id="1_ama7d"]
-[ext_resource type="PackedScene" uid="uid://dp5gl16d1ovuk" path="res://player.tscn" id="3_du2w6"]
+[ext_resource type="PackedScene" uid="uid://be244ik6uamjt" path="res://player.tscn" id="3_du2w6"]
 [ext_resource type="Texture2D" uid="uid://do74ckbsn63ng" path="res://Textures/Floor and Wall.png" id="4_sf6a5"]
-[ext_resource type="Script" path="res://TileMap.gd" id="5_vgp4j"]
+[ext_resource type="Script" path="res://Scripts/TileMap.gd" id="5_pymua"]
 [ext_resource type="Shader" path="res://Shaders/ColorTint.gdshader" id="6_e0x48"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_nejaq"]
@@ -14,6 +14,7 @@ texture_region_size = Vector2i(32, 32)
 0:1/0 = 0
 
 [sub_resource type="TileSet" id="TileSet_6o40r"]
+tile_size = Vector2i(32, 32)
 sources/0 = SubResource("TileSetAtlasSource_nejaq")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_7wxjv"]
@@ -39,15 +40,16 @@ z_index = 1
 [node name="Camera" type="Camera2D" parent="Player"]
 
 [node name="TileMap" type="TileMap" parent="."]
+scale = Vector2(4, 4)
 tile_set = SubResource("TileSet_6o40r")
 format = 2
-script = ExtResource("5_vgp4j")
+script = ExtResource("5_pymua")
 
 [node name="Sky color" type="ColorRect" parent="TileMap"]
 z_index = -1
 material = SubResource("ShaderMaterial_7wxjv")
-offset_left = -733.0
-offset_top = -408.0
-offset_right = 639.0
-offset_bottom = 419.0
+offset_left = -714.0
+offset_top = -407.0
+offset_right = 658.0
+offset_bottom = 420.0
 color = Color(0.905882, 0.482353, 1, 1)
