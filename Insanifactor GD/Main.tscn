@@ -1,8 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://cheshmqc02hpu"]
+[gd_scene load_steps=11 format=3 uid="uid://cheshmqc02hpu"]
 
 [ext_resource type="Script" path="res://Scripts/Main.gd" id="1_4rfff"]
 [ext_resource type="PackedScene" uid="uid://cedoxu0lnsch0" path="res://control.tscn" id="1_ama7d"]
 [ext_resource type="PackedScene" uid="uid://be244ik6uamjt" path="res://player.tscn" id="3_du2w6"]
+[ext_resource type="Script" path="res://Scripts/UI.gd" id="3_lg28v"]
 [ext_resource type="Texture2D" uid="uid://do74ckbsn63ng" path="res://Textures/Floor and Wall.png" id="4_sf6a5"]
 [ext_resource type="Script" path="res://Scripts/TileMap.gd" id="5_pymua"]
 [ext_resource type="Shader" path="res://Shaders/ColorTint.gdshader" id="6_e0x48"]
@@ -28,19 +29,15 @@ script = ExtResource("1_4rfff")
 z_index = 2
 anchors_preset = 9
 anchor_right = 0.0
-offset_left = -573.0
-offset_top = -325.0
-offset_right = -573.0
-offset_bottom = -325.0
+offset_left = -512.0
+offset_top = -324.0
+offset_right = -512.0
+offset_bottom = -324.0
 grow_horizontal = 1
-
-[node name="Player" parent="." instance=ExtResource("3_du2w6")]
-z_index = 1
-
-[node name="Camera" type="Camera2D" parent="Player"]
+script = ExtResource("3_lg28v")
 
 [node name="TileMap" type="TileMap" parent="."]
-scale = Vector2(4, 4)
+scale = Vector2(2, 2)
 tile_set = SubResource("TileSet_6o40r")
 format = 2
 script = ExtResource("5_pymua")
@@ -48,8 +45,14 @@ script = ExtResource("5_pymua")
 [node name="Sky color" type="ColorRect" parent="TileMap"]
 z_index = -1
 material = SubResource("ShaderMaterial_7wxjv")
-offset_left = -714.0
-offset_top = -407.0
-offset_right = 658.0
-offset_bottom = 420.0
+offset_left = -74568.0
+offset_top = -25310.0
+offset_right = 45765.0
+offset_bottom = 46809.0
 color = Color(0.905882, 0.482353, 1, 1)
+
+[node name="Player" parent="." instance=ExtResource("3_du2w6")]
+z_index = 1
+speed = 1148
+
+[node name="Camera" type="Camera2D" parent="Player"]

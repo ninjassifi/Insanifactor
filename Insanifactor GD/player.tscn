@@ -4,14 +4,16 @@
 [ext_resource type="Script" path="res://Scripts/player.gd" id="1_wjod8"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ljxnj"]
-size = Vector2(128, 128)
+size = Vector2(64, 64)
 
 [node name="Player" type="RigidBody2D"]
 script = ExtResource("1_wjod8")
+speed = 1710
 
 [node name="Collision" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_ljxnj")
 
 [node name="Placeholder" type="Sprite2D" parent="."]
 texture_filter = 1
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("1_er0c3")
