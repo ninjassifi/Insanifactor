@@ -1,14 +1,13 @@
 extends TileMap
 
 # Tile stuff
-@export var tileSize = 64;
+@export var tileSize = 16;
 
 # Size of chunks (in tiles)
-var chunkSizeX = 2;
-var chunkSizeY = 2;
+var chunkSizeX = 4;
+var chunkSizeY = 4;
 
-# Weather or not to generate on the fly or generate all at once
-const allAtOnce = true;
+var generatedChunks = {};
 
 # Perlin noise maps
 var biome = FastNoiseLite.new();
@@ -22,30 +21,60 @@ var altitude = FastNoiseLite.new();
 # Get screen size to make enough of the chunks to fill screen
 var screenSize;
 
+
 func _ready():
-	
 	biome.seed = randi();
-	altitude.seed = randi();
+	altitude.seed = randi();	
 
 func _process(delta):
-	#print(player.position)
-	
+	# Get screen size to figure out how big to create chunks
 	screenSize = get_viewport_rect().size;
 	
-	chunkSizeX = screenSize.x / tileSize;
-	chunkSizeY = screenSize.y / tileSize;
-	
-	generateChunk(player.position);
+	#generateChunk(player.position);
+	generateRadius(0, player.position);
+
+func generateRadius(radius, position):
+	var tilePos = local_to_map(position / scale);
+	generateChunk(tilePos);
 
 func generateChunk(position):
-	var tilePos = local_to_map(position / scale);
-	print(tilePos)
-	for x in range(chunkSizeX):
-		for y in range(chunkSizeY):
-			var alt = altitude.get_noise_2d(tilePos.x + x, tilePos.y + y);
+	
+	# We get the pos for the chunk we generate, it is the tile position / chunk size
+	var tilePos = Vector2i.ZERO; # = local_to_map(position / scale);
+	var chunkPos = convertToChunkpos(position);
+	
+	
+	
+	# If it is not generated, run the generation script
+	if (generatedChunks.get(chunkPos) == null):
+		generatedChunks[chunkPos] = true;
+		
+		# Debug
+		print(chunkPos)
+		print(player.position)
+		
+		# Get the actual tileposition but with steps of chunk position and offset so that the chunks generate when in the chunk area
+		tilePos.x = chunkPos.x * chunkSizeX - chunkSizeX;
+		tilePos.y = chunkPos.y * chunkSizeY - chunkSizeY;
+		
+		# Generate from 0 to chunkSize
+		for x in range(chunkSizeX):
+			for y in range(chunkSizeY):
+				var alt = altitude.get_noise_2d(tilePos.x + x, tilePos.y + y);
 			
-			set_cell(0, Vector2i((tilePos.x + x) - chunkSizeX / 2, (tilePos.y + y) - chunkSizeY / 2), 0, Vector2i(0, floor(alt + 1)));
+				set_cell(0, Vector2i(tilePos.x + x, tilePos.y + y), 0, Vector2i(0, floor(alt + 1)));
+				
+				
+				#var alt = altitude.get_noise_2d(chunkPos.x + x, chunkPos.y + y);
 			
+				#set_cell(0, Vector2i(chunkPos.x + x, chunkPos.y + y), 0, Vector2i(0, floor(alt + 1)));
+
+func convertToChunkpos(position):
+	var chunkPos = Vector2();
+	chunkPos.x = floor(position.x / chunkSizeX);
+	chunkPos.y = floor(position.y / chunkSizeY);
+	return chunkPos;
+	
 func convertFromTilepos(position):
 	position.x *= tileSize;
 	position.y *= tileSize;
