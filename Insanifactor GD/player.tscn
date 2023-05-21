@@ -7,8 +7,9 @@
 size = Vector2(64, 64)
 
 [node name="Player" type="RigidBody2D"]
+lock_rotation = true
 script = ExtResource("1_wjod8")
-speed = 1710
+speed = 442
 
 [node name="Collision" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_ljxnj")

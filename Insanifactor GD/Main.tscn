@@ -1,22 +1,50 @@
-[gd_scene load_steps=11 format=3 uid="uid://cheshmqc02hpu"]
+[gd_scene load_steps=15 format=3 uid="uid://cheshmqc02hpu"]
 
 [ext_resource type="Script" path="res://Scripts/Main.gd" id="1_4rfff"]
 [ext_resource type="PackedScene" uid="uid://cedoxu0lnsch0" path="res://control.tscn" id="1_ama7d"]
 [ext_resource type="PackedScene" uid="uid://be244ik6uamjt" path="res://player.tscn" id="3_du2w6"]
 [ext_resource type="Script" path="res://Scripts/UI.gd" id="3_lg28v"]
+[ext_resource type="Script" path="res://Scripts/FPS.gd" id="4_0wuh4"]
 [ext_resource type="Texture2D" uid="uid://do74ckbsn63ng" path="res://Textures/Floor and Wall.png" id="4_sf6a5"]
+[ext_resource type="Texture2D" uid="uid://dxmiot304oi8l" path="res://Textures/Floor wall and collider.png" id="5_858kp"]
 [ext_resource type="Script" path="res://Scripts/TileMap.gd" id="5_pymua"]
 [ext_resource type="Shader" path="res://Shaders/ColorTint.gdshader" id="6_e0x48"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_cqwro"]
+friction = 0.08
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_nejaq"]
 texture = ExtResource("4_sf6a5")
 texture_region_size = Vector2i(32, 32)
 0:0/0 = 0
+0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:0/0/physics_layer_0/angular_velocity = 0.0
 0:1/0 = 0
+0:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:1/0/physics_layer_0/angular_velocity = 0.0
+0:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
+0:1/0/physics_layer_0/polygon_0/one_way_margin = 2.0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_erqjx"]
+texture = ExtResource("5_858kp")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:0/0/physics_layer_0/angular_velocity = 0.0
+0:1/0 = 0
+0:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:1/0/physics_layer_0/angular_velocity = 0.0
+0:2/0 = 0
+0:2/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:2/0/physics_layer_0/angular_velocity = 0.0
+0:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
 
 [sub_resource type="TileSet" id="TileSet_6o40r"]
 tile_size = Vector2i(32, 32)
+physics_layer_0/collision_layer = 1
+physics_layer_0/physics_material = SubResource("PhysicsMaterial_cqwro")
 sources/0 = SubResource("TileSetAtlasSource_nejaq")
+sources/1 = SubResource("TileSetAtlasSource_erqjx")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_7wxjv"]
 shader = ExtResource("6_e0x48")
@@ -26,7 +54,7 @@ shader_parameter/tint = Vector3(0.146, 0, 0.406)
 script = ExtResource("1_4rfff")
 
 [node name="Ui" parent="." instance=ExtResource("1_ama7d")]
-z_index = 2
+top_level = true
 anchors_preset = 9
 anchor_right = 0.0
 offset_left = -512.0
@@ -36,23 +64,45 @@ offset_bottom = -324.0
 grow_horizontal = 1
 script = ExtResource("3_lg28v")
 
-[node name="TileMap" type="TileMap" parent="."]
-scale = Vector2(2, 2)
-tile_set = SubResource("TileSet_6o40r")
-format = 2
-script = ExtResource("5_pymua")
+[node name="FPS" type="Label" parent="Ui"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.035
+anchor_bottom = 0.035
+offset_right = -0.32
+offset_bottom = 0.32
+script = ExtResource("4_0wuh4")
 
-[node name="Sky color" type="ColorRect" parent="TileMap"]
-z_index = -1
-material = SubResource("ShaderMaterial_7wxjv")
-offset_left = -74568.0
-offset_top = -25310.0
-offset_right = 45765.0
-offset_bottom = 46809.0
-color = Color(0.905882, 0.482353, 1, 1)
+[node name="ChunkRadius" type="HSlider" parent="Ui"]
+layout_mode = 0
+offset_top = 20.0
+offset_right = 192.0
+offset_bottom = 36.0
 
 [node name="Player" parent="." instance=ExtResource("3_du2w6")]
-z_index = 1
+position = Vector2(8, 0)
 speed = 1148
 
 [node name="Camera" type="Camera2D" parent="Player"]
+
+[node name="Terrain" type="TileMap" parent="."]
+show_behind_parent = true
+z_as_relative = false
+position = Vector2(-1, 0)
+scale = Vector2(2, 2)
+tile_set = SubResource("TileSet_6o40r")
+format = 2
+layer_0/y_sort_enabled = true
+layer_0/tile_data = PackedInt32Array(-65536, 0, 0, -1, 0, 0, 65535, 0, 0, 0, 0, 0, 1, 0, 1, -65535, 0, 1, -131071, 0, 1, -131072, 0, 1, -65537, 0, 1, -65538, 0, 1, -2, 0, 1, 65534, 0, 1, 131070, 0, 1, 131071, 0, 1, 65536, 0, 1, 65537, 0, 1)
+script = ExtResource("5_pymua")
+
+[node name="Sky color" type="ColorRect" parent="Terrain"]
+z_index = -1
+material = SubResource("ShaderMaterial_7wxjv")
+offset_left = -74563.5
+offset_top = -25232.0
+offset_right = 45769.5
+offset_bottom = 46887.0
+color = Color(0.905882, 0.482353, 1, 1)
+
+[connection signal="value_changed" from="Ui/ChunkRadius" to="." method="onChunkRadiusChanged"]
