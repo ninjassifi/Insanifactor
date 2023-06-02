@@ -17,7 +17,10 @@ func _physics_process(delta):
 	
 	terrain.setChunkRadius(chunkRadius);
 	
-	var playerPos = terrain.getPositionToTile(player.position + Vector2(playerWidth / 2, playerHeight / 2));
+	#  Vector2(terrain.chunkSizeX * 32 / 2, terrain.chunkSizeY * 32 / 2) means add 2/1 tiles to the player pos
+	var playerPos = terrain.getPositionToTile(player.position + Vector2(playerWidth / 2, playerHeight / 2) + Vector2(terrain.chunkSizeX * 32 + 32, terrain.chunkSizeY * 32 / 2));
+	
+	
 	
 	print(playerPos);
 	# Generate chunks at player

@@ -53,38 +53,6 @@ shader_parameter/tint = Vector3(0.146, 0, 0.406)
 [node name="Main" type="Node2D"]
 script = ExtResource("1_4rfff")
 
-[node name="Ui" parent="." instance=ExtResource("1_ama7d")]
-top_level = true
-anchors_preset = 9
-anchor_right = 0.0
-offset_left = -512.0
-offset_top = -324.0
-offset_right = -512.0
-offset_bottom = -324.0
-grow_horizontal = 1
-script = ExtResource("3_lg28v")
-
-[node name="FPS" type="Label" parent="Ui"]
-layout_mode = 1
-anchors_preset = -1
-anchor_right = 0.035
-anchor_bottom = 0.035
-offset_right = -0.32
-offset_bottom = 0.32
-script = ExtResource("4_0wuh4")
-
-[node name="ChunkRadius" type="HSlider" parent="Ui"]
-layout_mode = 0
-offset_top = 20.0
-offset_right = 192.0
-offset_bottom = 36.0
-
-[node name="Player" parent="." instance=ExtResource("3_du2w6")]
-position = Vector2(8, 0)
-speed = 1148
-
-[node name="Camera" type="Camera2D" parent="Player"]
-
 [node name="Terrain" type="TileMap" parent="."]
 show_behind_parent = true
 z_as_relative = false
@@ -99,10 +67,47 @@ script = ExtResource("5_pymua")
 [node name="Sky color" type="ColorRect" parent="Terrain"]
 z_index = -1
 material = SubResource("ShaderMaterial_7wxjv")
-offset_left = -74563.5
-offset_top = -25232.0
-offset_right = 45769.5
-offset_bottom = 46887.0
+offset_left = -60987.5
+offset_top = -30924.0
+offset_right = 59345.5
+offset_bottom = 41195.0
 color = Color(0.905882, 0.482353, 1, 1)
 
-[connection signal="value_changed" from="Ui/ChunkRadius" to="." method="onChunkRadiusChanged"]
+[node name="Player" parent="." instance=ExtResource("3_du2w6")]
+position = Vector2(8, 0)
+speed = 1148
+
+[node name="Camera" type="Camera2D" parent="Player"]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 6
+
+[node name="Ui" parent="CanvasLayer" instance=ExtResource("1_ama7d")]
+process_priority = 1
+top_level = true
+anchors_preset = 9
+anchor_right = 0.0
+offset_left = -512.0
+offset_top = -324.0
+offset_right = -512.0
+offset_bottom = -324.0
+grow_horizontal = 1
+script = ExtResource("3_lg28v")
+
+[node name="FPS" type="Label" parent="CanvasLayer/Ui"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.035
+anchor_bottom = 0.035
+offset_right = -0.32
+offset_bottom = 0.32
+script = ExtResource("4_0wuh4")
+
+[node name="ChunkRadius" type="HSlider" parent="CanvasLayer/Ui"]
+layout_mode = 0
+offset_top = 20.0
+offset_right = 192.0
+offset_bottom = 36.0
+tick_count = 10
+
+[connection signal="value_changed" from="CanvasLayer/Ui/ChunkRadius" to="." method="onChunkRadiusChanged"]

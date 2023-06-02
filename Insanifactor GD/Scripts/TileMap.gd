@@ -103,6 +103,9 @@ func generateChunk(chunkPos : Vector2i):
 				tileType[Vector2i(tilePos.x + x, tilePos.y + y)] = TileType.AIR;
 				tileExact[Vector2i(tilePos.x + x, tilePos.y + y)] = TileExact.CLEAR_FLOOR;
 
+func fillArea(tilePos1 : Vector2i, tilePos2 : Vector2i, Tile):
+	pass
+
 func setPhysicsRadius(radius : int, tilePos : Vector2i):
 	# For every tile in a radius
 	# (physicsRadius is (center - radius) + 1 to (center + radius) - 1)
