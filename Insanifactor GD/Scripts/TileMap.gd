@@ -2,7 +2,7 @@ extends TileMap
 
 # Some info: Always setcell at layer 0, because that is the floor layer
 # Current tilemap:
-var tileMapIndex = 1;
+var globalTextureMapIndex = 1;
 # Tile stuff
 
 # Types of tile
@@ -13,10 +13,12 @@ enum TileType{
 };
 enum TileExact{
 	AIR,
+	OLD_CLEAR_FLOOR,
 	CLEAR_FLOOR,
 	WATER_SHALLOW,
 	WATER_MEDIUM,
 	WATER_DEEP,
+	OLD_WALL_ALONE,
 	WALL_ALONE,
 	WALL_ALONE_COLLIDE,
 	WALL_MIDDLE,
@@ -37,10 +39,12 @@ var tileExact = {};
 # Conversion table for turning tileExacts to tileTypes
 var tileTypeTable = {
 	TileExact.AIR :                TileType.AIR,
+	TileExact.OLD_CLEAR_FLOOR :    TileType.AIR,
 	TileExact.CLEAR_FLOOR :        TileType.AIR,
 	TileExact.WATER_SHALLOW :      TileType.WATER,
 	TileExact.WATER_MEDIUM :       TileType.WATER,
 	TileExact.WATER_DEEP :         TileType.WATER,
+	TileExact.OLD_WALL_ALONE :     TileType.WALL,
 	TileExact.WALL_ALONE :         TileType.WALL,
 	TileExact.WALL_ALONE_COLLIDE : TileType.WALL,
 	TileExact.WALL_TOP_LEFT :      TileType.WALL,
@@ -74,7 +78,8 @@ var generatedChunks = {};
 # Biomes
 enum BiomeType{
 	VOID,
-	NORMAL
+	NORMAL,
+	OLD
 }
 
 var biomeType = {};
@@ -130,8 +135,10 @@ func generateChunk(chunkPos : Vector2i):
 			var bio = biome.get_noise_2d(tilePos.x + tileX, tilePos.y + tileY) + .5;
 			print(bio);
 			# If biome variable is less than .9, than the biome will be normal
-			if(bio < .9):
+			if(bio < .6):
 				biomeType[tilePos + Vector2i(tileX, tileY)] = BiomeType.NORMAL;
+			elif(bio < .9):
+				biomeType[tilePos + Vector2i(tileX, tileY)] = BiomeType.OLD;
 			else:
 				biomeType[tilePos + Vector2i(tileX, tileY)] = BiomeType.VOID;
 			
@@ -148,6 +155,15 @@ func generateChunk(chunkPos : Vector2i):
 			# Void biome
 			elif(biomeType[tilePos + Vector2i(tileX, tileY)] == BiomeType.VOID):
 				setTile(Vector2i(tilePos + Vector2i(tileX, tileY)), TileExact.AIR);
+			
+			elif(biomeType[tilePos + Vector2i(tileX, tileY)] == BiomeType.OLD):
+				# If the altitude at a point is more than 1, set tile to wall 
+				if(floor(alt + 1) > 0):
+					# Set wall
+					setTile(Vector2i(tilePos + Vector2i(tileX, tileY)), TileExact.WALL_ALONE, 2);
+				else:
+					# Set floor
+					setTile(Vector2i(tilePos + Vector2i(tileX, tileY)), TileExact.CLEAR_FLOOR, 2);
 
 func setPhysicsRadius(radius : int, tilePos : Vector2i):
 	# For every tile in a radius
@@ -197,11 +213,11 @@ func fillArea(tilePos1 : Vector2i, tilePos2 : Vector2i, TileExact):
 		for tileY in range(tilePos1.y, tilePos2.y):
 			setTile(Vector2i(tileX, tileY), TileExact)
 
-func setTile(tilePos : Vector2i, TileExact):
+func setTile(tilePos : Vector2i, TileExact, textureMapIndex = globalTextureMapIndex):
 	# TileExact != tileExact, tileExact = enum while TileExact in this function is a pointer to a specific enum inside tileExact.
 	
-	# Decifering this is, set cell at (tilePos) the sprite at (vec2i) of spritesheet (tileMapIndex)
-	set_cell(0, tilePos, tileMapIndex, tileTextures.get(TileExact));
+	# Decifering this is, set cell at (tilePos) the sprite at (vec2i) of spritesheet (globalTextureMapIndex)
+	set_cell(0, tilePos, textureMapIndex, tileTextures.get(TileExact));
 	
 	# Set the TileExact and TileType
 	
