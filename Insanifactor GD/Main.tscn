@@ -65,14 +65,13 @@ script = ExtResource("5_pymua")
 [node name="Sky color" type="ColorRect" parent="Terrain"]
 z_index = -1
 material = SubResource("ShaderMaterial_7wxjv")
-offset_left = -60987.5
-offset_top = -30924.0
-offset_right = 59345.5
-offset_bottom = 41195.0
+offset_left = -60939.5
+offset_top = -30880.0
+offset_right = 59393.5
+offset_bottom = 41239.0
 color = Color(0.905882, 0.482353, 1, 1)
 
 [node name="Player" parent="." instance=ExtResource("3_du2w6")]
-position = Vector2(8, 0)
 speed = 1148
 
 [node name="Camera" type="Camera2D" parent="Player"]
