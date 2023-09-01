@@ -3,7 +3,6 @@ extends TileMap
 # Some info: Always setcell at layer 0, because that is the floor layer
 # Current tilemap:
 var globalTextureMapIndex = 1;
-# Tile stuff
 
 # Types of tile
 enum TileType{
@@ -66,15 +65,6 @@ var tileTextures = {
 	TileExact.WALL_ALONE_COLLIDE : Vector2i(0, 2)
 };
 
-# Size of chunks (in tiles)
-var chunkSizeX = 2;
-var chunkSizeY = 2;
-
-# Radius for chunks (in tiles)
-var chunkRadius = 5;
-
-var generatedChunks = {};
-
 # Biomes
 enum BiomeType{
 	VOID,
@@ -84,6 +74,16 @@ enum BiomeType{
 
 var biomeType = {};
 var biomePercentage = {};
+
+# Size of chunks (in tiles)
+var chunkSizeX = 2;
+var chunkSizeY = 2;
+
+# Radius for chunks (in tiles)
+var chunkRadius = 5;
+
+var generatedChunks = {};
+
 # Perlin noise maps
 var biome = FastNoiseLite.new();
 var altitude = FastNoiseLite.new();
@@ -133,7 +133,6 @@ func generateChunk(chunkPos : Vector2i):
 			
 			# bio is from 0 to 1, get_noise_2d goes from -0.5 to 0.5
 			var bio = biome.get_noise_2d(tilePos.x + tileX, tilePos.y + tileY) + .5;
-			print(bio);
 			# If biome variable is less than .9, than the biome will be normal
 			if(bio < .6):
 				biomeType[tilePos + Vector2i(tileX, tileY)] = BiomeType.NORMAL;

@@ -38,7 +38,7 @@ func generatePlayer(player):
 	
 	
 	
-	print(playerPos);
+	#print(playerPos);
 	# Generate chunks at player
 	terrain.generatePlayer(playerPos);
 

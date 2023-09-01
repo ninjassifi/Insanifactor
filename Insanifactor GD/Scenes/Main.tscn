@@ -1,0 +1,117 @@
+[gd_scene load_steps=14 format=3 uid="uid://dj1050wh66gg5"]
+
+[ext_resource type="Script" path="res://Scripts/Main.gd" id="1_4rfff"]
+[ext_resource type="PackedScene" uid="uid://cedoxu0lnsch0" path="res://Scenes/control.tscn" id="1_ama7d"]
+[ext_resource type="Texture2D" uid="uid://d260tyakn2uhx" path="res://Textures/New floorwallcollider.png" id="2_lshfe"]
+[ext_resource type="PackedScene" uid="uid://c5isjbm3omwj" path="res://Scenes/player.tscn" id="3_du2w6"]
+[ext_resource type="Script" path="res://Scripts/UI.gd" id="3_lg28v"]
+[ext_resource type="Script" path="res://Scripts/FPS.gd" id="4_0wuh4"]
+[ext_resource type="Texture2D" uid="uid://dxmiot304oi8l" path="res://Textures/Floor wall and collider.png" id="5_858kp"]
+[ext_resource type="PackedScene" uid="uid://nxhcsbs6vwmp" path="res://Scenes/enemy.tscn" id="5_fbb5s"]
+[ext_resource type="Script" path="res://Scripts/TileMap.gd" id="5_pymua"]
+[ext_resource type="PackedScene" uid="uid://2i5w1lfylqp0" path="res://Scenes/main_menu.tscn" id="9_e01j0"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_574xc"]
+texture = ExtResource("2_lshfe")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:0/0/physics_layer_0/angular_velocity = 0.0
+0:1/0 = 0
+0:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:1/0/physics_layer_0/angular_velocity = 0.0
+0:2/0 = 0
+0:2/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:2/0/physics_layer_0/angular_velocity = 0.0
+0:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ybeyq"]
+texture = ExtResource("5_858kp")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:0/0/physics_layer_0/angular_velocity = 0.0
+0:1/0 = 0
+0:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:1/0/physics_layer_0/angular_velocity = 0.0
+0:2/0 = 0
+0:2/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:2/0/physics_layer_0/angular_velocity = 0.0
+0:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-14, -14, 14, -14, 14, 13.5, -14, 14)
+
+[sub_resource type="TileSet" id="TileSet_npyit"]
+tile_size = Vector2i(32, 32)
+physics_layer_0/collision_layer = 1
+sources/2 = SubResource("TileSetAtlasSource_ybeyq")
+sources/1 = SubResource("TileSetAtlasSource_574xc")
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_4rfff")
+
+[node name="Terrain" type="TileMap" parent="."]
+show_behind_parent = true
+z_as_relative = false
+scale = Vector2(2, 2)
+tile_set = SubResource("TileSet_npyit")
+format = 2
+layer_0/y_sort_enabled = true
+layer_0/tile_data = PackedInt32Array(-65536, 0, 0, -1, 0, 0, 65535, 0, 0, 0, 0, 0, 1, 0, 1, -65535, 0, 1, -131071, 0, 1, -131072, 0, 1, -65537, 0, 1, -65538, 0, 1, -2, 0, 1, 65534, 0, 1, 131070, 0, 1, 131071, 0, 1, 65536, 0, 1, 65537, 0, 1)
+script = ExtResource("5_pymua")
+
+[node name="TerrainGen" type="Node" parent="Terrain"]
+
+[node name="Enemy" parent="." instance=ExtResource("5_fbb5s")]
+position = Vector2(215, 1)
+
+[node name="Player" parent="." instance=ExtResource("3_du2w6")]
+
+[node name="Camera" type="Camera2D" parent="Player"]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 6
+follow_viewport_enabled = true
+
+[node name="Ui" parent="CanvasLayer" instance=ExtResource("1_ama7d")]
+process_priority = 1
+top_level = true
+anchors_preset = 9
+anchor_right = 0.0
+offset_left = -512.0
+offset_top = -324.0
+offset_right = -512.0
+offset_bottom = -324.0
+grow_horizontal = 1
+script = ExtResource("3_lg28v")
+
+[node name="FPS" type="Label" parent="CanvasLayer/Ui"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.035
+anchor_bottom = 0.035
+offset_right = -0.32
+offset_bottom = 0.32
+script = ExtResource("4_0wuh4")
+
+[node name="ChunkRadius" type="HSlider" parent="CanvasLayer/Ui"]
+layout_mode = 0
+offset_top = 20.0
+offset_right = 192.0
+offset_bottom = 36.0
+max_value = 20.0
+tick_count = 10
+
+[node name="Main menu" parent="." instance=ExtResource("9_e01j0")]
+visible = false
+anchors_preset = 15
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[connection signal="value_changed" from="CanvasLayer/Ui/ChunkRadius" to="." method="onChunkRadiusChanged"]

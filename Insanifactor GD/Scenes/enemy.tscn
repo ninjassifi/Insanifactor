@@ -1,0 +1,51 @@
+[gd_scene load_steps=9 format=3 uid="uid://nxhcsbs6vwmp"]
+
+[ext_resource type="PackedScene" uid="uid://c6vpiruf5jvw8" path="res://Base classes/character.tscn" id="1_ihp46"]
+[ext_resource type="Texture2D" uid="uid://dgowe18sgag66" path="res://Textures/floor.png" id="2_o8y1g"]
+[ext_resource type="PackedScene" uid="uid://cum5ewuce1sgx" path="res://Components/health_bar_component.tscn" id="3_xtryh"]
+
+[sub_resource type="Gradient" id="Gradient_1bqio"]
+offsets = PackedFloat32Array(0.0296296, 1)
+colors = PackedColorArray(1.44392e-07, 0.792496, 0.107505, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_dtcgm"]
+gradient = SubResource("Gradient_1bqio")
+width = 1
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_0jhrc"]
+texture = SubResource("GradientTexture1D_dtcgm")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fiddh"]
+size = Vector2(66, 66)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_n78dt"]
+size = Vector2(64, 64)
+
+[node name="Enemy" instance=ExtResource("1_ihp46")]
+
+[node name="Sprite" parent="." index="0"]
+scale = Vector2(4, 4)
+texture = ExtResource("2_o8y1g")
+
+[node name="HealthComponent" parent="." index="1"]
+max_health = 30.0
+
+[node name="HealthBarComponent" parent="." index="2" node_paths=PackedStringArray("health_component") instance=ExtResource("3_xtryh")]
+health_component = NodePath("../HealthComponent")
+
+[node name="ProgressBar" type="ProgressBar" parent="HealthBarComponent" index="0"]
+offset_left = -50.0
+offset_top = -43.0
+offset_right = 50.0
+offset_bottom = -23.0
+theme_override_styles/fill = SubResource("StyleBoxTexture_0jhrc")
+value = 69.0
+show_percentage = false
+
+[node name="Area" parent="HurtboxComponent" index="0"]
+shape = SubResource("RectangleShape2D_fiddh")
+
+[node name="CollisionShape" parent="." index="4"]
+shape = SubResource("RectangleShape2D_n78dt")
+
+[connection signal="damaged" from="HealthComponent" to="HealthBarComponent" method="damaged"]

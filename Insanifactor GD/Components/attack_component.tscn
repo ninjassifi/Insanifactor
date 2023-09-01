@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dkxpobckdwh2c"]
+
+[ext_resource type="Script" path="res://Components/attack_component.gd" id="1_wkjh1"]
+
+[node name="AttackComponent" type="Area2D"]
+script = ExtResource("1_wkjh1")

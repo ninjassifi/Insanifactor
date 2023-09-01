@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://cwhcbglejme4e"]
+
+[ext_resource type="PackedScene" uid="uid://de5pd3r6hp4q8" path="res://Components/hurtbox_component.tscn" id="1_1c7er"]
+[ext_resource type="PackedScene" uid="uid://dgbjyrhego31s" path="res://Components/health_component.tscn" id="2_6l51x"]
+
+[node name="StaticObject" type="StaticBody2D"]
+
+[node name="Sprite" type="Sprite2D" parent="."]
+
+[node name="HealthComponent" parent="." instance=ExtResource("2_6l51x")]
+
+[node name="HurtboxComponent" parent="." instance=ExtResource("1_1c7er")]
+
+[node name="CollisionShape" type="CollisionShape2D" parent="."]

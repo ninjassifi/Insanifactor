@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://dk1p2yocco82u"]
+
+[ext_resource type="PackedScene" uid="uid://yxkeakeqje17" path="res://Base classes/weapon.tscn" id="1_h4e4d"]
+[ext_resource type="Texture2D" uid="uid://cu3m5r4a1gcfr" path="res://Textures/icon.svg" id="2_4o25l"]
+[ext_resource type="PackedScene" uid="uid://dkxpobckdwh2c" path="res://Components/attack_component.tscn" id="3_jndrd"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_agmtf"]
+size = Vector2(128, 64)
+
+[node name="Sword" node_paths=PackedStringArray("attack_component") instance=ExtResource("1_h4e4d")]
+attack_component = NodePath("AttackComponent")
+
+[node name="Sprite" parent="." index="0"]
+position = Vector2(0, 1)
+scale = Vector2(1, 0.5)
+texture = ExtResource("2_4o25l")
+
+[node name="AttackComponent" parent="." index="1" instance=ExtResource("3_jndrd")]
+attack_damage = 1.4
+attack_cooldown = 0.3
+
+[node name="Area" type="CollisionShape2D" parent="AttackComponent" index="0"]
+position = Vector2(0, 1)
+shape = SubResource("RectangleShape2D_agmtf")
+
+[connection signal="area_entered" from="AttackComponent" to="AttackComponent" method="onAreaEntered"]
+[connection signal="area_exited" from="AttackComponent" to="AttackComponent" method="onAreaExited"]
